@@ -7,7 +7,7 @@ import * as path from 'path';
 
 export interface IPythonSettings {
     pythonPath: string;
-    devOptions: any[];
+    devOptions: string[];
     linting: ILintingSettings;
     formatting: IFormattingSettings;
     unitTest: IUnitTestSettings;
@@ -159,7 +159,7 @@ export class PythonSettings extends EventEmitter implements IPythonSettings {
     }
 
     public pythonPath: string;
-    public devOptions: any[];
+    public devOptions: string[];
     public linting: ILintingSettings;
     public formatting: IFormattingSettings;
     public autoComplete: IAutoCompeteSettings;

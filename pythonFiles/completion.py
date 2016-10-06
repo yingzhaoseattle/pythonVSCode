@@ -4,10 +4,6 @@ import re
 import sys
 import json
 import traceback
-sys.path.append(os.path.dirname(__file__))
-import jedi
-# remove jedi from path after we import it so it will not be completed
-sys.path.pop(0)
 
 WORD_RE = re.compile(r'\w')
 
@@ -339,4 +335,18 @@ class JediCompletion(object):
                 sys.stderr.flush()
 
 if __name__ == '__main__':
+    jediPreview = False
+    if len(sys.argv) > 1 and sys.argv[1] == 'preview':
+        jediPath = os.path.join(os.path.dirname(__file__), 'preview', 'jedi')
+        jediPreview = False
+    else:
+        jediPath = os.path.join(os.path.dirname(__file__), 'release')
+
+    sys.path.append(jediPath)
+    import jedi
+    if jediPreview:
+        jedi.settings.cache_directory = os.path.join(jedi.settings.cache_directory, 'v' + jedi.__version__.replace('.', ''))
+
+    # remove jedi from path after we import it so it will not be completed
+    sys.path.pop(0)
     JediCompletion().watch()
