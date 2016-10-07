@@ -63,20 +63,29 @@ for suite in suites._tests:
                 return;
             }
             line = line.trim();
-            if (line.length === 0){
+            if (line.length === 0) {
                 return;
             }
             testItems.push(line);
         });
     }
     args = [];
-    return execPythonFile(pythonSettings.pythonPath, args.concat(['-c', pythonScript]), rootDirectory, true, processOutput, token)
-        .then(() => {
+    return execPythonFile(pythonSettings.pythonPath, args.concat(['-c', pythonScript]), rootDirectory, true, null, token)
+        .then(data => {
+            processOutput(data);
             if (token && token.isCancellationRequested) {
                 return Promise.reject<Tests>('cancelled');
             }
 
-            return parseTestIds(rootDirectory, testItems);
+            if (startDirectory.startsWith('..')) {
+                startDirectory = startDirectory.substring(2);
+            }
+            if (startDirectory.startsWith('.')) {
+                startDirectory = startDirectory.substring(1);
+            }
+            startDirectory = startDirectory === '/' ? '' : startDirectory;
+            const testRootDirectory = startDirectory.length === 0 ? rootDirectory : path.join(rootDirectory, startDirectory);
+            return parseTestIds(testRootDirectory, testItems);
         });
 }
 
@@ -118,7 +127,7 @@ function addTestId(rootDirectory: string, testId: string, testFiles: TestFile[])
     }
 
     // Check if we already have this test file
-    const classNameToRun = testIdParts.slice(0, testIdParts.length - 1).join('.');
+    const classNameToRun = testId.split('.').slice(0, testId.split('.').length - 1).join('.');
     let testSuite = testFile.suites.find(cls => cls.nameToRun === classNameToRun);
     if (!testSuite) {
         testSuite = {

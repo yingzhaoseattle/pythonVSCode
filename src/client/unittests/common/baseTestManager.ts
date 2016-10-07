@@ -116,9 +116,9 @@ export abstract class BaseTestManager {
             });
     }
     abstract discoverTestsImpl(ignoreCache: boolean): Promise<Tests>;
-    public runTest(testsToRun?: TestsToRun): Promise<Tests>;
-    public runTest(runFailedTests?: boolean): Promise<Tests>;
-    public runTest(args: any): Promise<Tests> {
+    public runTest(testsToRun?: TestsToRun, debug?: boolean): Promise<Tests>;
+    public runTest(runFailedTests?: boolean, debug?: boolean): Promise<Tests>;
+    public runTest(args: any, debug?: boolean): Promise<Tests> {
         let runFailedTests = false;
         let testsToRun: TestsToRun = null;
         let moreInfo = {

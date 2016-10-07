@@ -1,8 +1,8 @@
 /// <reference path="../../../../typings/globals/xml2js/index.d.ts" />
 
 'use strict';
+import * as vscode from 'vscode';
 import * as path from 'path';
-import {execPythonFile} from './../../common/utils';
 import {createDeferred, createTemporaryFile} from '../../common/helpers';
 import {TestFile, TestsToRun, TestSuite, TestFunction, FlattenedTestFunction, Tests, TestStatus, FlattenedTestSuite} from '../common/contracts';
 import {extractBetweenDelimiters, flattenTestFiles, updateResults, convertFileToPackage} from '../common/testUtils';
@@ -31,18 +31,18 @@ interface ITestData {
     traceback: string;
 }
 
-export function runTest(rootDirectory: string, tests: Tests, args: string[], testsToRun?: TestsToRun, token?: CancellationToken, outChannel?: OutputChannel): Promise<Tests> {
+export function runTest(rootDirectory: string, tests: Tests, args: string[], testsToRun?: TestsToRun, token?: CancellationToken, outChannel?: OutputChannel, debug?: boolean): Promise<Tests> {
     tests.summary.errors = 0;
     tests.summary.failures = 0;
     tests.summary.passed = 0;
     tests.summary.skipped = 0;
-
     const testLauncherFile = path.join(__dirname, '..', '..', '..', '..', 'pythonFiles', 'PythonTools', 'visualstudio_py_testlauncher.py');
     const server = new Server();
     server.on('error', (message: string, ...data: string[]) => {
         console.log(`${message} ${data.join(' ')}`);
     });
     server.on('log', (message: string, ...data: string[]) => {
+        var x = '';
     });
     server.on('connect', (data) => {
     });
@@ -67,8 +67,25 @@ export function runTest(rootDirectory: string, tests: Tests, args: string[], tes
             testPaths[counter] = '-t' + testPaths[counter].trim();
         }
         let testArgs = buildTestArgs(args);
-        testArgs = [testLauncherFile].concat(testArgs).concat(`--result-port=${port}`).concat(testPaths);
-        return run(settings.pythonPath, testArgs, rootDirectory, token, outChannel);
+        const pyTestRunnerArgs = [`--result-port=${port}`];
+        if (debug === true) {
+            pyTestRunnerArgs.concat([`--secret=my_secret`, `--port=3000`]);
+        }
+        testArgs = [testLauncherFile].concat(testArgs).concat(pyTestRunnerArgs).concat(testPaths);
+        const promise = run(settings.pythonPath, testArgs, rootDirectory, token, outChannel);
+        if (debug === true) {
+            vscode.commands.executeCommand('vscode.startDebug', {
+                "name": "Debug Unit Test",
+                "type": "python",
+                "request": "attach",
+                "localRoot": rootDirectory,
+                "remoteRoot": rootDirectory,
+                "port": 3000,
+                "secret": "my_secret",
+                "host": "localhost"
+            });
+        }
+        return promise;
     }).then(() => {
         updateResults(tests);
         return tests;

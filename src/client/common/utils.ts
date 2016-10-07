@@ -157,11 +157,12 @@ function spawnFileInternal(file: string, args: string[], options: child_process.
             });
         }
         proc.on('error', error => {
-            return reject(error);
+            return reject(error + '');
         });
-        proc.stdout.setEncoding('utf8');
-        proc.stderr.setEncoding('utf8');
+        // proc.stdout.setEncoding('utf8');
+        // proc.stderr.setEncoding('utf8');
         proc.stdout.on('data', function (data) {
+            data = data + '';
             if (token && token.isCancellationRequested) {
                 return;
             }
@@ -169,6 +170,7 @@ function spawnFileInternal(file: string, args: string[], options: child_process.
         });
 
         proc.stderr.on('data', function (data) {
+            data = data + '';
             if (token && token.isCancellationRequested) {
                 return;
             }

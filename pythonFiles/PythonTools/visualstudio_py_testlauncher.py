@@ -271,7 +271,9 @@ def main():
                 opts.up = 'test*.py'
             tests = unittest.defaultTestLoader.discover(opts.us, opts.up)
         else:
+            print(opts.tests)
             tests = unittest.defaultTestLoader.loadTestsFromNames(opts.tests)
+            print(tests)
         if opts.uvInt is None:
             opts.uvInt = 0
         runner = unittest.TextTestRunner(verbosity=opts.uvInt, resultclass=VsTestResult)
