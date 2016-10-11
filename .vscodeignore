@@ -13,3 +13,7 @@ vsc-extension-quickstart.md
 .travis.yml
 requirements.txt
 webpack.config.js
+pythonFiles/preview/jedi/docs/**
+pythonFiles/preview/jedi/scripts/**
+pythonFiles/preview/jedi/test/**
+pythonFiles/preview/jedi/*.*
