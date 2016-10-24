@@ -7,9 +7,9 @@ matrix:
         # - os: linux
         #   sudo: required
         #   python: 2.7
-        # - os: linux
-        #   sudo: required
-        #   python: 3.5
+        - os: linux
+          sudo: required
+          python: 3.5
         # # Use generic language for osx
         # - os: osx
         #   language: generic
@@ -20,6 +20,11 @@ matrix:
           env: PYTHON=3.5.1
 # Perform the manual steps on osx to install python3 and activate venv
 before_install: |
+  if [ $TRAVIS_OS_NAME == "linux" ]; then
+    export CXX="g++-4.9" CC="gcc-4.9" DISPLAY=:99.0;
+    sh -e /etc/init.d/xvfb start;
+    sleep 3;
+  fi
   git submodule update --init --recursive
   git clone https://github.com/creationix/nvm.git ./.nvm
   source ./.nvm/nvm.sh
