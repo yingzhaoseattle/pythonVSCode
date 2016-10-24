@@ -1,3 +1,4 @@
+/// <reference path='../../node_modules/@types/mocha/index.d.ts'/>
 //
 // PLEASE DO NOT MODIFY / DELETE UNLESS YOU KNOW WHAT YOU ARE DOING
 //
