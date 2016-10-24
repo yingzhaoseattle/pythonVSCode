@@ -18,6 +18,10 @@ import { execPythonFile } from '../client/common/utils';
 
 suiteSetup(done => {
     initialize().then(() => {
+        console.log(process.env['OUTPUT']);
+        console.log(process.env['OUTPUT1']);
+        console.log(process.env['OUTPUT2']);
+        console.log('\n');
         console.log(process.env);
         console.log(Object.keys(process.env));
         new Promise<string>(resolve => {
