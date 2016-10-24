@@ -3,7 +3,7 @@
 // Please refer to their documentation on https://mochajs.org/ for help.
 //
 // Place this right on top
-import { initialize } from './initialize';
+import { initialize, IS_TRAVIS, PYTHON_PATH } from './initialize';
 // The module 'assert' provides assertion methods from node
 import * as assert from 'assert';
 
@@ -15,28 +15,29 @@ import { KernelRestartedError, KernelShutdownError } from '../client/jupyter/com
 import { createDeferred } from '../client/common/helpers';
 import { KernelspecMetadata } from '../client/jupyter/contracts';
 import { execPythonFile } from '../client/common/utils';
+import * as settings from '../client/common/configSettings';
+let pythonSettings = settings.PythonSettings.getInstance();
 
 suiteSetup(done => {
     initialize().then(() => {
-        console.log(process.env['OUTPUT']);
-        console.log(process.env['OUTPUT1']);
-        console.log(process.env['OUTPUT2']);
-        console.log('\n');
-        console.log(process.env);
-        console.log(Object.keys(process.env));
+        if (!IS_TRAVIS) {
+            return done();
+        }
+
         new Promise<string>(resolve => {
             // Support for travis
             let version = process.env['TRAVIS_PYTHON_VERSION'];
             if (typeof version === 'string') {
                 console.log('Version from travis is ' + version);
             }
+            console.log('Path used is ' + PYTHON_PATH);
             // Support for local tests
-            execPythonFile('python', ['--version'], __dirname, true).then(resolve);
+            execPythonFile(PYTHON_PATH, ['--version'], __dirname, true).then(resolve);
         }).then(version => {
-            console.log('Version returned is ' + version)
+            console.log('Version returned is ' + version);
+            pythonSettings.pythonPath = PYTHON_PATH;
             done();
         });
-        done();
     });
 });
 
