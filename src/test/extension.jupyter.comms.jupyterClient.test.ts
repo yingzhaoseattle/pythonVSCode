@@ -14,9 +14,24 @@ import * as mocks from './mockClasses';
 import { KernelRestartedError, KernelShutdownError } from '../client/jupyter/common/errors';
 import { createDeferred } from '../client/common/helpers';
 import { KernelspecMetadata } from '../client/jupyter/contracts';
+import { execPythonFile } from '../client/common/utils';
 
 suiteSetup(done => {
     initialize().then(() => {
+        console.log(process.env);
+        console.log(Object.keys(process.env));
+        new Promise<string>(resolve => {
+            // Support for travis
+            let version = process.env['TRAVIS_PYTHON_VERSION'];
+            if (typeof version === 'string') {
+                console.log('Version from travis is ' + version);
+            }
+            // Support for local tests
+            execPythonFile('python', ['--version'], __dirname, true).then(resolve);
+        }).then(version => {
+            console.log('Version returned is ' + version)
+            done();
+        });
         done();
     });
 });

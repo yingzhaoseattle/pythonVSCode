@@ -45,6 +45,9 @@ before_install: |
     python -c 'import sys;print(sys.executable)' 
   fi
 install:
+  - python --version 
+  - python -c 'import sys;print(sys.version)' 
+  - python -c 'import sys;print(sys.executable)' 
   - pip3 install --upgrade pip
   - pip3 install jupyter
   - pip install -r requirements.txt
