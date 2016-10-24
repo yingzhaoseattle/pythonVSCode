@@ -38,6 +38,7 @@ export function closeActiveWindows(counter: number = 0): Thenable<any> {
 }
 
 export const IS_TRAVIS = (process.env['TRAVIS'] + '') === 'true';
+export const TEST_TIMEOUT = 1000;
 
 function getPythonPath(): string {
     const pythonPaths = ['/home/travis/virtualenv/python3.5.2/bin/python'];
