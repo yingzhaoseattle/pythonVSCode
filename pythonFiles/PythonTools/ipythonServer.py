@@ -56,7 +56,7 @@ except ImportError:
 
 DEBUG = os.environ.get('DEBUG_DJAYAMANNE_IPYTHON', '0') == '1'
 TEST = os.environ.get('PYTHON_DONJAYAMANNE_TEST', '0') == '1'
-
+DEBUG = True
 
 def _debug_write(out):
     if DEBUG:
