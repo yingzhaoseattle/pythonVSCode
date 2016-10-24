@@ -5,13 +5,23 @@ export class MockOutputChannel implements vscode.OutputChannel {
         this.name = name;
         this.output = '';
     }
+    public writeToConsole: boolean;
     name: string;
     output: string;
     isShown: boolean;
     append(value: string) {
         this.output += value;
+        if (this.writeToConsole) {
+            console.log(value);
+        }
     }
-    appendLine(value: string) { this.append(value); this.append('\n'); }
+    appendLine(value: string) {
+        this.append(value); this.append('\n');
+        if (this.writeToConsole) {
+            console.log(value);
+            console.log('\n');
+        }
+    }
     clear() { }
     show(preservceFocus?: boolean): void;
     show(column?: vscode.ViewColumn, preserveFocus?: boolean): void;

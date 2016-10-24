@@ -64,6 +64,7 @@ export class JupyterClientAdapter extends EventEmitter implements IJupyterClient
         Object.assign(newEnv, process.env);
 
         this.startSocketServer().then(port => {
+            console.log(`socket server started on por ${port}`);
             const def = createDeferred<any>();
             const options = { env: newEnv, cwd: this.rootDir };
             this.process = child_process.spawn(PythonSettings.getInstance().pythonPath, [pyFile, port.toString()], options);
@@ -77,6 +78,7 @@ export class JupyterClientAdapter extends EventEmitter implements IJupyterClient
             const promiseToResolve = isInTestRun ? testDef.resolve.bind(testDef) : def.resolve.bind(def);
 
             this.process.stdout.on('data', (data: string) => {
+                console.log(data);
                 if (data.split(/\r?\n/g).some(line => line === 'Started')) {
                     processStarted = true;
                     if (processStarted && handshakeDone) {
@@ -87,10 +89,12 @@ export class JupyterClientAdapter extends EventEmitter implements IJupyterClient
                 this.outputChannel.append(data);
             });
             this.process.stderr.on('data', (data: string) => {
+                console.log(data);
                 this.outputChannel.append(data);
             });
 
             this.ipythonAdapter.on('handshake', () => {
+                console.log('handshake done');
                 handshakeDone = true;
                 if (processStarted && handshakeDone) {
                     promiseToResolve();
@@ -116,6 +120,7 @@ export class JupyterClientAdapter extends EventEmitter implements IJupyterClient
 
             return def.promise;
         }).then(() => {
+            console.log('yay');
             this.startDef.resolve();
         }).catch(reason => {
             this.startDef.reject(reason);

@@ -25,6 +25,7 @@ suiteSetup(done => {
 suite('JupyterClient', () => {
     test('Ping (Process and Socket)', done => {
         const output = new mocks.MockOutputChannel('Jupyter');
+        output.writeToConsole = true;
         const jupyter = new JupyterClientAdapter(output, __dirname);
         jupyter.start({ 'PYTHON_DONJAYAMANNE_TEST': '1' }).then(() => {
             done();
@@ -36,6 +37,7 @@ suite('JupyterClient', () => {
     test('Start Jupyter Adapter (Socket Client)', done => {
         process.env['PYTHON_DONJAYAMANNE_TEST'] = '0';
         const output = new mocks.MockOutputChannel('Jupyter');
+        output.writeToConsole = true;
         const jupyter = new JupyterClientAdapter(output, __dirname);
         jupyter.start().then(() => {
             done();
@@ -48,6 +50,7 @@ suite('JupyterClient', () => {
     test('List Kernels (with start)', done => {
         process.env['PYTHON_DONJAYAMANNE_TEST'] = '0';
         const output = new mocks.MockOutputChannel('Jupyter');
+        output.writeToConsole = true;
         const jupyter = new JupyterClientAdapter(output, __dirname);
         jupyter.start().then(() => {
             return jupyter.getAllKernelSpecs();
@@ -63,6 +66,7 @@ suite('JupyterClient', () => {
     test('List Kernels (without starting)', done => {
         process.env['PYTHON_DONJAYAMANNE_TEST'] = '0';
         const output = new mocks.MockOutputChannel('Jupyter');
+        output.writeToConsole = true;
         const jupyter = new JupyterClientAdapter(output, __dirname);
         jupyter.getAllKernelSpecs().then(kernelSpecs => {
             assert.notEqual(Object.keys(kernelSpecs).length, 0, 'kernelSpecs not found');
@@ -77,6 +81,7 @@ suite('JupyterClient', () => {
     test('Start Kernel (with start)', done => {
         process.env['PYTHON_DONJAYAMANNE_TEST'] = '0';
         const output = new mocks.MockOutputChannel('Jupyter');
+        output.writeToConsole = true;
         const jupyter = new JupyterClientAdapter(output, __dirname);
         jupyter.start().then(() => {
             return jupyter.getAllKernelSpecs();
@@ -98,6 +103,7 @@ suite('JupyterClient', () => {
     });
     test('Start Kernel (without start)', done => {
         const output = new mocks.MockOutputChannel('Jupyter');
+        output.writeToConsole = true;
         const jupyter = new JupyterClientAdapter(output, __dirname);
         process.env['PYTHON_DONJAYAMANNE_TEST'] = '0';
         jupyter.getAllKernelSpecs().then(kernelSpecs => {
@@ -128,6 +134,7 @@ suite('JupyterClient', () => {
     test('Execute Code (success)', done => {
         process.env['PYTHON_DONJAYAMANNE_TEST'] = '0';
         const output = new mocks.MockOutputChannel('Jupyter');
+        output.writeToConsole = true;
         const jupyter = new JupyterClientAdapter(output, __dirname);
         jupyter.start().then(() => {
             return jupyter.getAllKernelSpecs();
@@ -157,6 +164,7 @@ suite('JupyterClient', () => {
     test('Execute Code (with threads)', done => {
         process.env['PYTHON_DONJAYAMANNE_TEST'] = '0';
         const output = new mocks.MockOutputChannel('Jupyter');
+        output.writeToConsole = true;
         const jupyter = new JupyterClientAdapter(output, __dirname);
         jupyter.start().then(() => {
             return jupyter.getAllKernelSpecs();
@@ -187,6 +195,7 @@ suite('JupyterClient', () => {
     test('Execute Code (failure)', done => {
         process.env['PYTHON_DONJAYAMANNE_TEST'] = '0';
         const output = new mocks.MockOutputChannel('Jupyter');
+        output.writeToConsole = true;
         const jupyter = new JupyterClientAdapter(output, __dirname);
         jupyter.start().then(() => {
             return jupyter.getAllKernelSpecs();
@@ -216,6 +225,7 @@ suite('JupyterClient', () => {
     test('Shutdown Kernel', done => {
         process.env['PYTHON_DONJAYAMANNE_TEST'] = '0';
         const output = new mocks.MockOutputChannel('Jupyter');
+        output.writeToConsole = true;
         const jupyter = new JupyterClientAdapter(output, __dirname);
         jupyter.start().then(() => {
             return jupyter.getAllKernelSpecs();
@@ -241,6 +251,7 @@ suite('JupyterClient', () => {
     test('Shutdown while executing code', done => {
         process.env['PYTHON_DONJAYAMANNE_TEST'] = '0';
         const output = new mocks.MockOutputChannel('Jupyter');
+        output.writeToConsole = true;
         const jupyter = new JupyterClientAdapter(output, __dirname);
         jupyter.start().then(() => {
             return jupyter.getAllKernelSpecs();
@@ -283,6 +294,7 @@ suite('JupyterClient', () => {
     test('Execute code after shutdowning down when executing code', done => {
         process.env['PYTHON_DONJAYAMANNE_TEST'] = '0';
         const output = new mocks.MockOutputChannel('Jupyter');
+        output.writeToConsole = true;
         const jupyter = new JupyterClientAdapter(output, __dirname);
         let kernelSpecUsed: KernelspecMetadata;
         jupyter.start().then(() => {
@@ -340,6 +352,7 @@ suite('JupyterClient', () => {
     test('Interrupt Kernel', done => {
         process.env['PYTHON_DONJAYAMANNE_TEST'] = '0';
         const output = new mocks.MockOutputChannel('Jupyter');
+        output.writeToConsole = true;
         const jupyter = new JupyterClientAdapter(output, __dirname);
         jupyter.start().then(() => {
             return jupyter.getAllKernelSpecs();
@@ -368,6 +381,7 @@ suite('JupyterClient', () => {
     test('Interrupt Kernel while executing code', done => {
         process.env['PYTHON_DONJAYAMANNE_TEST'] = '0';
         const output = new mocks.MockOutputChannel('Jupyter');
+        output.writeToConsole = true;
         const jupyter = new JupyterClientAdapter(output, __dirname);
         jupyter.start().then(() => {
             return jupyter.getAllKernelSpecs();
@@ -406,6 +420,7 @@ suite('JupyterClient', () => {
     test('Restart Kernel', done => {
         process.env['PYTHON_DONJAYAMANNE_TEST'] = '0';
         const output = new mocks.MockOutputChannel('Jupyter');
+        output.writeToConsole = true;
         const jupyter = new JupyterClientAdapter(output, __dirname);
         jupyter.start().then(() => {
             return jupyter.getAllKernelSpecs();
@@ -431,6 +446,7 @@ suite('JupyterClient', () => {
     test('Restart while executing code', done => {
         process.env['PYTHON_DONJAYAMANNE_TEST'] = '0';
         const output = new mocks.MockOutputChannel('Jupyter');
+        output.writeToConsole = true;
         const jupyter = new JupyterClientAdapter(output, __dirname);
         jupyter.start().then(() => {
             return jupyter.getAllKernelSpecs();
@@ -472,6 +488,7 @@ suite('JupyterClient', () => {
     test('Execute multiple blocks of Code', done => {
         process.env['PYTHON_DONJAYAMANNE_TEST'] = '0';
         const output = new mocks.MockOutputChannel('Jupyter');
+        output.writeToConsole = true;
         const jupyter = new JupyterClientAdapter(output, __dirname);
         jupyter.start().then(() => {
             return jupyter.getAllKernelSpecs();
@@ -530,6 +547,7 @@ suite('JupyterClient', () => {
     test('Status change', done => {
         process.env['PYTHON_DONJAYAMANNE_TEST'] = '0';
         const output = new mocks.MockOutputChannel('Jupyter');
+        output.writeToConsole = true;
         const jupyter = new JupyterClientAdapter(output, __dirname);
         jupyter.start().then(() => {
             return jupyter.getAllKernelSpecs();
