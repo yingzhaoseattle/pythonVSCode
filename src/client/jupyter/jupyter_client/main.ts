@@ -116,7 +116,6 @@ export class JupyterClientAdapter extends EventEmitter implements IJupyterClient
 
             return def.promise;
         }).then(() => {
-            console.log('yay');
             this.startDef.resolve();
         }).catch(reason => {
             this.startDef.reject(reason);
