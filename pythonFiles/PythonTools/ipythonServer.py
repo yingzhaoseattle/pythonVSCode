@@ -56,23 +56,12 @@ except ImportError:
 
 DEBUG = os.environ.get('DEBUG_DJAYAMANNE_IPYTHON', '0') == '1'
 TEST = os.environ.get('PYTHON_DONJAYAMANNE_TEST', '0') == '1'
-DEBUG = True
-
-def _debug_write(out):
-    if DEBUG:
-        sys.__stdout__.write(out)
-        sys.__stdout__.write("\n")
-        sys.__stdout__.flush()
 
 # The great "support IPython 2, 3, 4" strat begins
 if not TEST:
-    _debug_write('not TEST')
-    _debug_write(sys.version)
-
     try:
         import jupyter
     except ImportError:
-        _debug_write('import failed')
         jupyter_era = False
     else:
         jupyter_era = True
@@ -92,6 +81,13 @@ if not TEST:
         multiKernelManager = MultiKernelManager()
 
 # End of the great "support IPython 2, 3, 4" strat
+
+
+def _debug_write(out):
+    if DEBUG:
+        sys.__stdout__.write(out)
+        sys.__stdout__.write("\n")
+        sys.__stdout__.flush()
 
 
 def listKernelSpecs():
