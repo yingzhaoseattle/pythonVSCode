@@ -44,20 +44,11 @@ before_install: |
     python -c 'import sys;print(sys.version)' 
     python -c 'import sys;print(sys.executable)' 
   fi
-  python --version 
-  python -c 'import sys;print(sys.version)' 
-  python -c 'import sys;print(sys.executable)'
-  OUTPUT1=$(python -c 'import sys;print(sys.executable)');
-  echo "$OUTPUT1" 
 install:
+# we have this here so we can see where python is installed and hardcode in our tests
+# else when running npm test, the python version picked is completely different :(
   - python --version 
-  - python -c 'import sys;print(sys.version)' 
   - python -c 'import sys;print(sys.executable)'
-  - OUTPUT=$(python -c 'import sys;print(sys.executable)');
-  - echo "$OUTPUT" 
-  - echo "$OUTPUT1" 
-  - pip3 install --upgrade pip
-  - pip3 install jupyter
   - pip install -r requirements.txt
   - npm install
   - npm run vscode:prepublish
