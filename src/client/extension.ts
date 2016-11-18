@@ -16,6 +16,7 @@ import * as telemetryHelper from './common/telemetry';
 import * as telemetryContracts from './common/telemetryContracts';
 import { activateSimplePythonRefactorProvider } from './providers/simpleRefactorProvider';
 import { activateSetInterpreterProvider } from './providers/setInterpreterProvider';
+import { activateUpdateSparkLibraryProvider } from './providers/updateSparkLibraryProvider';
 import { activateExecInTerminalProvider } from './providers/execInTerminalProvider';
 import * as tests from './unittests/main';
 import * as jup from './jupyter/main';
@@ -47,6 +48,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     sortImports.activate(context, formatOutChannel);
     context.subscriptions.push(activateSetInterpreterProvider());
+    context.subscriptions.push(activateUpdateSparkLibraryProvider());
     context.subscriptions.push(...activateExecInTerminalProvider());
     activateSimplePythonRefactorProvider(context, formatOutChannel);
     context.subscriptions.push(activateFormatOnSaveProvider(PYTHON, settings.PythonSettings.getInstance(), formatOutChannel, vscode.workspace.rootPath));

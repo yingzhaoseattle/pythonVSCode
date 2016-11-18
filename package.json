@@ -116,6 +116,11 @@
         "category": "Python"
       },
       {
+        "command": "python.updateSparkLibrary",
+        "title": "Update Workspace PySpark Libraries",
+        "category": "Python"
+      },
+      {
         "command": "python.refactorExtractVariable",
         "title": "Extract Variable",
         "category": "Python Refactor"
@@ -390,13 +395,27 @@
         },
         "initialConfigurations": [
           {
+            "name": "PySpark",
+            "type": "python",
+            "request": "launch",
+            "stopOnEntry": true,
+            "pythonPath": "${env.SPARK_HOME}/bin/spark-submit",
+            "program": "${file}",
+            "cwd": "${workspaceRoot}",
+            "debugOptions": [
+              "WaitOnAbnormalExit",
+              "WaitOnNormalExit",
+              "RedirectOutput"
+            ]
+          },
+          {
             "name": "Python",
             "type": "python",
             "request": "launch",
             "stopOnEntry": true,
             "pythonPath": "${config.python.pythonPath}",
             "program": "${file}",
-            "cwd": "null",
+            "cwd": "${workspaceRoot}",
             "debugOptions": [
               "WaitOnAbnormalExit",
               "WaitOnNormalExit",
@@ -424,7 +443,7 @@
             "stopOnEntry": true,
             "pythonPath": "${config.python.pythonPath}",
             "program": "${file}",
-            "cwd": "null",
+            "cwd": "${workspaceRoot}",
             "console": "integratedTerminal",
             "debugOptions": [
               "WaitOnAbnormalExit",
@@ -438,7 +457,7 @@
             "stopOnEntry": true,
             "pythonPath": "${config.python.pythonPath}",
             "program": "${file}",
-            "cwd": "null",
+            "cwd": "${workspaceRoot}",
             "console": "externalTerminal",
             "debugOptions": [
               "WaitOnAbnormalExit",
@@ -452,7 +471,7 @@
             "stopOnEntry": true,
             "pythonPath": "${config.python.pythonPath}",
             "program": "${workspaceRoot}/manage.py",
-            "cwd": "null",
+            "cwd": "${workspaceRoot}",
             "args": [
               "runserver",
               "--noreload"
@@ -471,7 +490,7 @@
             "stopOnEntry": false,
             "pythonPath": "${config.python.pythonPath}",
             "program": "fully qualified path fo 'flask' executable. Generally located along with python interpreter",
-            "cwd": "null",
+            "cwd": "${workspaceRoot}",
             "env": {
               "FLASK_APP": "${workspaceRoot}/quickstart/app.py"
             },
@@ -493,7 +512,7 @@
             "stopOnEntry": false,
             "pythonPath": "${config.python.pythonPath}",
             "program": "${workspaceRoot}/run.py",
-            "cwd": "null",
+            "cwd": "${workspaceRoot}",
             "args": [],
             "debugOptions": [
               "WaitOnAbnormalExit",
@@ -508,7 +527,7 @@
             "stopOnEntry": true,
             "pythonPath": "${config.python.pythonPath}",
             "program": "${workspaceRoot}/console.py",
-            "cwd": "null",
+            "cwd": "${workspaceRoot}",
             "args": [
               "dev",
               "runserver",
